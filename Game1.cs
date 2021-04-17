@@ -21,23 +21,14 @@ namespace Falling_Fruits
 
         List<GUI> mainMenu = new List<GUI>();
 
-        Model banana;
-        Model apple;
-        Model pear;
-        Model melon;
-
         Model fruit_plate;
         Model plate;
         Model terrain;
 
         Random random;
 
-        List<string> fruitTypes = new List<string>()
-        {
-            "banana","apple","pear","melon"
-        };
-        List<FruitEntity> fruitList = new List<FruitEntity>();
-
+        FruitEntity fruits;
+  
         enum GameState
         {
             MainMenu,
@@ -54,6 +45,7 @@ namespace Falling_Fruits
             IsMouseVisible = true;
 
             player = new Player(Vector3.Zero);
+            fruits = new FruitEntity();
 
             mainMenu.Add(new GUI("play"));
             mainMenu.Add(new GUI("credits"));
@@ -92,12 +84,8 @@ namespace Falling_Fruits
 
             player.LoadContent(Content);
 
-            banana = Content.Load<Model>("Fruits\\banane");
-            apple = Content.Load<Model>("Fruits\\apfel");
-            pear = Content.Load<Model>("Fruits\\birne");
-            melon = Content.Load<Model>("Fruits\\melone");
-            plate = Content.Load<Model>("Player\\teller");
-            terrain = Content.Load<Model>("Player\\boden");
+            fruits.LoadModel(Content);
+
             fruit_plate = Content.Load<Model>("Fruits\\FruchtTeller");
         }
 
@@ -150,6 +138,7 @@ namespace Falling_Fruits
         private void UpdateInGame(GameTime gameTime)
         {
             player.Update(gameTime);
+            fruits.Update(gameTime);
         }
         private void UpdateCredits(GameTime gameTime)
         {
@@ -191,13 +180,14 @@ namespace Falling_Fruits
 
         private void DrawInGame(GameTime gameTime)
         {
-            DrawModel(melon);
+            
             player.Draw(projectionMatrix);
+            fruits.Draw(projectionMatrix, viewMatrix);
         }
 
         private void DrawCredits(GameTime gameTime)
         {
-            DrawModel(pear);
+
         }
 
         protected void DrawModel(Model model)
