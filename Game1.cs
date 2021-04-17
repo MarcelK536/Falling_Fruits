@@ -17,6 +17,8 @@ namespace Falling_Fruits
         Matrix viewMatrix;
         Matrix worldMatrix;
 
+        Player player;
+
         List<GUI> mainMenu = new List<GUI>();
 
         Model banana;
@@ -51,6 +53,7 @@ namespace Falling_Fruits
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
+            player = new Player(Vector3.Zero);
 
             mainMenu.Add(new GUI("play"));
             mainMenu.Add(new GUI("credits"));
@@ -86,6 +89,8 @@ namespace Falling_Fruits
                 g.CenterElement(600, 800);
             }
             mainMenu.Find(x => x.AssetName == "credits").MoveElement(150, 0);
+
+            player.LoadContent(Content);
 
             banana = Content.Load<Model>("Fruits\\banane");
             apple = Content.Load<Model>("Fruits\\apfel");
@@ -144,7 +149,7 @@ namespace Falling_Fruits
         }
         private void UpdateInGame(GameTime gameTime)
         {
-
+            player.Update(gameTime);
         }
         private void UpdateCredits(GameTime gameTime)
         {
@@ -187,6 +192,7 @@ namespace Falling_Fruits
         private void DrawInGame(GameTime gameTime)
         {
             DrawModel(melon);
+            player.Draw(projectionMatrix);
         }
 
         private void DrawCredits(GameTime gameTime)
