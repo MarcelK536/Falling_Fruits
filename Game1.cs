@@ -22,12 +22,19 @@ namespace Falling_Fruits
         List<GUI> mainMenu = new List<GUI>();
 
         Model fruit_plate;
-        Model plate;
         Model terrain;
 
-        Random random;
 
-        FruitEntity fruits;
+        Model pineapple;
+        Model apple;
+        Model pear;
+        Model banana;
+
+        List<Model> fruitModels = new List<Model>();
+
+        Random random = new Random();
+
+        List<FruitEntity> fruitList;
   
         enum GameState
         {
@@ -45,7 +52,7 @@ namespace Falling_Fruits
             IsMouseVisible = true;
 
             player = new Player(Vector3.Zero);
-            fruits = new FruitEntity();
+            fruitList = new List <FruitEntity>();
 
             mainMenu.Add(new GUI("play"));
             mainMenu.Add(new GUI("credits"));
@@ -64,6 +71,8 @@ namespace Falling_Fruits
             worldMatrix = Matrix.CreateTranslation(new Vector3(0f, 0f, 0f));
             viewMatrix = Matrix.CreateLookAt(new Vector3(0f, 0f, 10f), new Vector3(0f, 0f, 0f), Vector3.Up);
             projectionMatrix = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), GraphicsDevice.DisplayMode.AspectRatio, 1f, 1000f);
+
+
 
         }
 
@@ -84,9 +93,18 @@ namespace Falling_Fruits
 
             player.LoadContent(Content);
 
-            fruits.LoadModel(Content);
-
             fruit_plate = Content.Load<Model>("Fruits\\FruchtTeller");
+
+            pineapple = Content.Load<Model>("Fruits\\ananas");
+            apple = Content.Load<Model>("Fruits\\apfel");
+            pear = Content.Load<Model>("Fruits\\banane");
+            banana = Content.Load<Model>("Fruits\\birne");
+
+            fruitModels.Add(pineapple);
+            fruitModels.Add(apple);
+            fruitModels.Add(pear);
+            fruitModels.Add(banana);
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -138,7 +156,17 @@ namespace Falling_Fruits
         private void UpdateInGame(GameTime gameTime)
         {
             player.Update(gameTime);
-            fruits.Update(gameTime);
+
+            if (fruitList.Count < 50)
+            {
+                int randomFruit = random.Next(fruitModels.Count);
+                fruitList.Add(new FruitEntity(fruitModels[randomFruit]));
+            }
+            foreach(FruitEntity fruit in fruitList)
+            {
+                fruit.Update(gameTime);
+            }
+
         }
         private void UpdateCredits(GameTime gameTime)
         {
@@ -182,7 +210,11 @@ namespace Falling_Fruits
         {
             
             player.Draw(projectionMatrix);
-            fruits.Draw(projectionMatrix, viewMatrix);
+            foreach(FruitEntity fruit in fruitList)
+            {
+                fruit.Draw(projectionMatrix, player.viewMatrix, Content);
+            }
+
             DrawModel(Content.Load<Model>("Player\\Boden"));
         }
 

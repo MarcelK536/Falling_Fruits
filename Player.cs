@@ -16,13 +16,12 @@ namespace Falling_Fruits
         float pSpeed;
 
         Vector3 camPos;
-        Matrix viewMatrix;
+        public Matrix viewMatrix;
         Matrix[] transformations;
 
         public Player(Vector3 pos)
         {
-            camPos = new Vector3(pos.X, pos.Y + 10, pos.Z - 10);
-            viewMatrix = Matrix.CreateLookAt(camPos, Vector3.Zero, Vector3.Up);
+            camPos = new Vector3(pos.X, pos.Y + 10, pos.Z - 15);
             pRotation = Vector3.Zero;
             pSpeed = 5f;
         }
@@ -34,30 +33,30 @@ namespace Falling_Fruits
 
         public void Update(GameTime gameTime)
         {
-            camPos.X = pRotation.X - 15f * (float)Math.Sin(pRotation.Y);
-            camPos.Z = pRotation.Z - 5f * (float)Math.Cos(pRotation.Y);
+            camPos.X = pPosition.X - 15f * (float)Math.Sin(pRotation.Y);
+            camPos.Z = pPosition.Z - 15f * (float)Math.Cos(pRotation.Y);
             viewMatrix = Matrix.CreateLookAt(camPos, pPosition, Vector3.Up);
 
             KeyboardState kbState = Keyboard.GetState();
 
             if(kbState.IsKeyDown(Keys.W) || kbState.IsKeyDown(Keys.Up))
             {
-                pPosition.X += (float)Math.Sin(pRotation.Y) * pSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                pPosition.Z += (float)Math.Cos(pRotation.Y) * pSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                pPosition.X += (float)Math.Sin(pRotation.Y) * pSpeed;
+                pPosition.Z += (float)Math.Cos(pRotation.Y) * pSpeed;
             }
             if (kbState.IsKeyDown(Keys.S) || kbState.IsKeyDown(Keys.Down))
             {
-                pPosition.X -= (float)Math.Sin(pRotation.Y) * pSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                pPosition.Z -= (float)Math.Cos(pRotation.Y) * pSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                pPosition.X -= (float)Math.Sin(pRotation.Y) * pSpeed;
+                pPosition.Z -= (float)Math.Cos(pRotation.Y) * pSpeed;
 
             }
             if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
             {
-                pRotation.Y += .05f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                pRotation.Y += .05f;
             }
             if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
             {
-                pRotation.Y -= .05f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                pRotation.Y -= .05f;
             }
         }
         public void Draw(Matrix projectionMatrix)

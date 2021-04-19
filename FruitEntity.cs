@@ -9,53 +9,34 @@ namespace Falling_Fruits
 {
     class FruitEntity
     {
-        public Vector3 Position;
-        public Model Model;
-        fruitTypes fruit;
+        public Vector3 fposition;
+        public Model fmodel;
+        fType fruitType;
         float fallSpeed;
 
         Matrix[] transformations;
 
         List<FruitEntity> fruitEntities = new List<FruitEntity>();
 
-        public enum fruitTypes { ananas, apple, pear, cherry, melon}
-        int fruitTypeAmount = Enum.GetNames(typeof(fruitTypes)).Length;
-        public FruitEntity()
+        public enum fType { ananas, apple, pear, cherry, melon}
+        int fruitTypeAmount = Enum.GetNames(typeof(fType)).Length;
+        public FruitEntity(Model genModel)
         {
-            fruit = (fruitTypes) new Random().Next(fruitTypeAmount);
-            Position = Vector3.Left * new Random().Next(10) + Vector3.Forward * new Random().Next(10);
-            fallSpeed = 1f;
+            fruitType = getFruit(genModel);
+            fposition = Vector3.Left * new Random().Next(-10, 10) + Vector3.Forward * new Random().Next(-10,10);
+            fmodel = genModel;
+            fallSpeed = 1f;         
         }
 
-        public void LoadModel(ContentManager content)
+
+        public fType getFruit (Model model) 
         {
-            switch (fruit)
-            {
-                case fruitTypes.ananas:
-                    Model = content.Load<Model>("Fruits\\ananas");
-                    break;
-                case fruitTypes.apple:
-                    Model = content.Load<Model>("Fruits\\apfel");
-                    break;
-                case fruitTypes.pear:
-                    Model = content.Load<Model>("Fruits\\birne");
-                    break;
-                case fruitTypes.cherry:
-                    Model = content.Load<Model>("Fruits\\kirsche");
-                    break;
-                case fruitTypes.melon:
-                    Model = content.Load<Model>("Fruits\\melone");
-                    break;
-                default:
-                    Model = content.Load<Model>("Fruits\\melonenstueck");
-                    break;
-            }
+            return fType.ananas;
         }
 
         public void Update(GameTime gameTime)
         {
-            Position -= Vector3.Down * fallSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            NewFruit();
+            fposition -= Vector3.Down * fallSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
 
         public void CollisionCheck()
@@ -63,19 +44,12 @@ namespace Falling_Fruits
             //TODO
         }
 
-        public void NewFruit()
-        {
-            while(fruitEntities.Count < 4)
-            {
-                fruitEntities.Add(new FruitEntity());
-            }
-        }
 
-        public void Draw(Matrix projectionMatrix, Matrix viewMatrix)
+        public void Draw(Matrix projectionMatrix, Matrix viewMatrix, ContentManager content)
         {
             foreach(FruitEntity fruit in fruitEntities)
             {
-                DrawModel(Model, projectionMatrix, viewMatrix);
+                DrawModel(fruit.fmodel, projectionMatrix, viewMatrix);
             }
         }
         protected void DrawModel(Model model, Matrix projectionMatrix, Matrix viewMatrix)
@@ -86,7 +60,7 @@ namespace Falling_Fruits
             {
                 foreach (BasicEffect effect in modelMesh.Effects)
                 {
-                    effect.World = transformations[modelMesh.ParentBone.Index] * Matrix.CreateScale(10f);
+                    effect.World = transformations[modelMesh.ParentBone.Index] * Matrix.CreateScale(100f) * Matrix.CreateTranslation(fposition) ;
                     effect.View = viewMatrix;
                     effect.Projection = projectionMatrix;
                     effect.EnableDefaultLighting();
