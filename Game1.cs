@@ -183,6 +183,7 @@ namespace Falling_Fruits
             
             player.Draw(projectionMatrix);
             fruits.Draw(projectionMatrix, viewMatrix);
+            DrawModel(Content.Load<Model>("Player\\Boden"));
         }
 
         private void DrawCredits(GameTime gameTime)
