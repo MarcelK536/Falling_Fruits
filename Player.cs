@@ -22,8 +22,13 @@ namespace Falling_Fruits
         public Player(Vector3 pos)
         {
             camPos = new Vector3(pos.X, pos.Y + 10, pos.Z - 10);
-            viewMatrix = Matrix.CreateLookAt(camPos, Vector3.Zero, Vector3.Up);
+            viewMatrix = Matrix.CreateLookAt(camPos, Vector3.Forward, Vector3.Up);
             pSpeed = 5f;
+
+            pRotation.X += 1f;
+
+            pPosition.Z -= 5;
+
         }
 
         public void LoadContent(ContentManager content)
@@ -31,32 +36,39 @@ namespace Falling_Fruits
             pModel = content.Load<Model>("Player\\teller");
         }
 
+        public Matrix GetView()
+        {
+            return viewMatrix;
+        }
+
         public void Update(GameTime gameTime)
         {
-            camPos.X = pRotation.X - 15f * (float)Math.Sin(pRotation.Y);
+            /*camPos.X = pRotation.X - 15f * (float)Math.Sin(pRotation.Y);
             camPos.Z = pRotation.Z - 5f * (float)Math.Cos(pRotation.Y);
             viewMatrix = Matrix.CreateLookAt(camPos, pPosition, Vector3.Up);
-
+            */
             KeyboardState kbState = Keyboard.GetState();
 
             if(kbState.IsKeyDown(Keys.W) || kbState.IsKeyDown(Keys.Up))
             {
-                pPosition.X += (float)Math.Sin(pRotation.Y) * pSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                pPosition.Z += (float)Math.Cos(pRotation.Y) * pSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                pPosition.Z += 0.05f;//(float)Math.Sin(pRotation.Y) * pSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                //pPosition.Z += 1;//(float)Math.Cos(pRotation.Y) * pSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
             if (kbState.IsKeyDown(Keys.S) || kbState.IsKeyDown(Keys.Down))
             {
-                pPosition.X -= (float)Math.Sin(pRotation.Y) * pSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                pPosition.Z -= (float)Math.Cos(pRotation.Y) * pSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                pPosition.Z -= 0.05f;//(float)Math.Sin(pRotation.Y) * pSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                //pPosition.Z -= 1;//(float)Math.Cos(pRotation.Y) * pSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             }
             if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
             {
-                pRotation.Y += .05f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                pPosition.X += 0.05f;
+                //pRotation.Y += .05f * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
             if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
             {
-                pRotation.Y -= .05f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                pPosition.X -= 0.05f;
+                //pRotation.Y -= .05f * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
         }
         public void Draw(Matrix projectionMatrix)

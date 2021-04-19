@@ -18,6 +18,7 @@ namespace Falling_Fruits
         Matrix worldMatrix;
 
         Player player;
+        FruitEntity fruitEntity;
 
         List<GUI> mainMenu = new List<GUI>();
 
@@ -54,6 +55,7 @@ namespace Falling_Fruits
             IsMouseVisible = true;
 
             player = new Player(Vector3.Zero);
+
 
             mainMenu.Add(new GUI("play"));
             mainMenu.Add(new GUI("credits"));
@@ -99,6 +101,13 @@ namespace Falling_Fruits
             plate = Content.Load<Model>("Player\\teller");
             terrain = Content.Load<Model>("Player\\boden");
             fruit_plate = Content.Load<Model>("Fruits\\FruchtTeller");
+
+            Model[] m = new Model[4];
+            m[0] = banana;
+            m[1] = apple;
+            m[2] = pear;
+            m[3] = melon;
+            fruitEntity = new FruitEntity(m);
         }
 
         protected override void Update(GameTime gameTime)
@@ -150,6 +159,7 @@ namespace Falling_Fruits
         private void UpdateInGame(GameTime gameTime)
         {
             player.Update(gameTime);
+            fruitEntity.Update(gameTime);
         }
         private void UpdateCredits(GameTime gameTime)
         {
@@ -191,8 +201,8 @@ namespace Falling_Fruits
 
         private void DrawInGame(GameTime gameTime)
         {
-            DrawModel(melon);
             player.Draw(projectionMatrix);
+            fruitEntity.Draw(gameTime, player.GetView(), projectionMatrix);
         }
 
         private void DrawCredits(GameTime gameTime)
