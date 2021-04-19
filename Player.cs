@@ -23,6 +23,7 @@ namespace Falling_Fruits
         {
             camPos = new Vector3(pos.X, pos.Y + 10, pos.Z - 10);
             viewMatrix = Matrix.CreateLookAt(camPos, Vector3.Zero, Vector3.Up);
+            pRotation = Vector3.Zero;
             pSpeed = 5f;
         }
 
