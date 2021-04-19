@@ -20,6 +20,8 @@ namespace Falling_Fruits
         Player player;
 
         List<GUI> mainMenu = new List<GUI>();
+        List<GUI> creditsMenu = new List<GUI>();
+        SpriteFont CreditsFont;
 
         Model fruit_plate;
         Model terrain;
@@ -56,6 +58,8 @@ namespace Falling_Fruits
 
             mainMenu.Add(new GUI("play"));
             mainMenu.Add(new GUI("credits"));
+
+            creditsMenu.Add(new GUI("back"));
         }
 
         protected override void Initialize()
@@ -71,8 +75,6 @@ namespace Falling_Fruits
             worldMatrix = Matrix.CreateTranslation(new Vector3(0f, 0f, 0f));
             viewMatrix = Matrix.CreateLookAt(new Vector3(0f, 0f, 10f), new Vector3(0f, 0f, 0f), Vector3.Up);
             projectionMatrix = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), GraphicsDevice.DisplayMode.AspectRatio, 1f, 1000f);
-
-
 
         }
 
@@ -91,6 +93,12 @@ namespace Falling_Fruits
             }
             mainMenu.Find(x => x.AssetName == "credits").MoveElement(210, 0);
 
+            creditsMenu.Find(x => x.AssetName == "back").LoadContent(Content.Load<Texture2D>("GUI\\Back"));
+            foreach (GUI g in creditsMenu)
+            {
+                g.CenterElement(600, 800);
+            }
+            creditsMenu.Find(x => x.AssetName == "back").MoveElement(-85,-75);
             player.LoadContent(Content);
 
             fruit_plate = Content.Load<Model>("Fruits\\FruchtTeller");
@@ -105,6 +113,8 @@ namespace Falling_Fruits
             fruitModels.Add(pear);
             fruitModels.Add(banana);
 
+            CreditsFont = Content.Load<SpriteFont>("CreditsFont");
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -115,7 +125,6 @@ namespace Falling_Fruits
             // TODO: Add your update logic here
 
             base.Update(gameTime);
-            worldMatrix = Matrix.CreateRotationY((float)gameTime.TotalGameTime.TotalSeconds / 2);
 
             switch (gameState)
             {
@@ -133,6 +142,7 @@ namespace Falling_Fruits
 
         private void UpdateMainMenu(GameTime gameTime)
         {
+            worldMatrix = Matrix.CreateRotationY((float)gameTime.TotalGameTime.TotalSeconds / 2);
             foreach (GUI g in mainMenu)
             {
                 if (g.Update())
@@ -155,7 +165,7 @@ namespace Falling_Fruits
         }
         private void UpdateInGame(GameTime gameTime)
         {
-            player.Update(gameTime);
+
 
             if (fruitList.Count < 50)
             {
@@ -167,10 +177,26 @@ namespace Falling_Fruits
                 fruit.Update(gameTime);
             }
 
+            player.Update(gameTime);
+
         }
         private void UpdateCredits(GameTime gameTime)
         {
+            foreach (GUI g in creditsMenu)
+            {
+                if (g.Update())
+                {
+                    switch (g.AssetName)
+                    {
+                        case ("back"):
+                            gameState = GameState.MainMenu;
+                            break;
+                        default:
+                            break;
 
+                    }
+                }
+            }
         }
 
         protected override void Draw(GameTime gameTime)
@@ -212,15 +238,27 @@ namespace Falling_Fruits
             player.Draw(projectionMatrix);
             foreach(FruitEntity fruit in fruitList)
             {
-                fruit.Draw(projectionMatrix, player.viewMatrix, Content);
+                fruit.Draw(fruitList,projectionMatrix, player);
             }
 
-            DrawModel(Content.Load<Model>("Player\\Boden"));
+            _spriteBatch.Begin();
+            _spriteBatch.DrawString(CreditsFont, "Score:", new Vector2(10, 10), Color.Black);
+            _spriteBatch.End();
+
+            DrawModelPlayerView(Content.Load<Model>("Player\\Boden"));
         }
 
         private void DrawCredits(GameTime gameTime)
         {
-
+            _spriteBatch.Begin();
+            foreach(GUI g in creditsMenu)
+            {
+                g.Draw(_spriteBatch);
+            }
+            _spriteBatch.DrawString(CreditsFont, "Credits:", new Vector2(100, 50), Color.Black);
+            _spriteBatch.DrawString(CreditsFont, "Fruit Models are:", new Vector2(100, 100), Color.Black);
+            _spriteBatch.DrawString(CreditsFont, "\"Low Poly Fruits v2\" (https://skfb.ly/6D6QF) by EdwinRC \n is licensed under Creative Commons Attribution \n (http://creativecommons.org/licenses/by/4.0/).", new Vector2(25, 150), Color.Black);
+            _spriteBatch.End();
         }
 
         protected void DrawModel(Model model)
@@ -230,6 +268,21 @@ namespace Falling_Fruits
                 foreach (BasicEffect effect in modelMesh.Effects)
                 {
                     effect.View = viewMatrix;
+                    effect.World = worldMatrix;
+                    effect.Projection = projectionMatrix;
+                    effect.EnableDefaultLighting();
+                }
+                modelMesh.Draw();
+            }
+        }
+
+        protected void DrawModelPlayerView(Model model)
+        {
+            foreach (ModelMesh modelMesh in model.Meshes)
+            {
+                foreach (BasicEffect effect in modelMesh.Effects)
+                {
+                    effect.View = player.viewMatrix;
                     effect.World = worldMatrix;
                     effect.Projection = projectionMatrix;
                     effect.EnableDefaultLighting();

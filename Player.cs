@@ -21,9 +21,9 @@ namespace Falling_Fruits
 
         public Player(Vector3 pos)
         {
-            camPos = new Vector3(pos.X, pos.Y + 10, pos.Z - 15);
+            camPos = new Vector3(pos.X, pos.Y + 15, pos.Z - 15);
             pRotation = Vector3.Zero;
-            pSpeed = 5f;
+            pSpeed = 1f;
         }
 
         public void LoadContent(ContentManager content)
