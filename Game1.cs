@@ -33,6 +33,8 @@ namespace Falling_Fruits
         Model plate;
         Model terrain;
 
+        int Score;
+
         Random random;
 
         List<string> fruitTypes = new List<string>()
@@ -229,8 +231,10 @@ namespace Falling_Fruits
             player.Draw(projectionMatrix);
             fruitEntity.Draw(gameTime, player.GetView(), projectionMatrix);
 
+
+
             _spriteBatch.Begin();
-            _spriteBatch.DrawString(CreditsFont, "Score:", new Vector2(10, 10), Color.Black);
+            _spriteBatch.DrawString(CreditsFont, "Score: "+ fruitEntity.getCaught() , new Vector2(10, 10), Color.Black);
             _spriteBatch.End();
 
         }

@@ -75,5 +75,16 @@ namespace Falling_Fruits
             }
             }
         }
+
+        public int getCaught()
+        {
+            int anzahlGefangen = 0;
+            for(int i =0; i< gefangen.Length; i++)
+            {
+                if(gefangen[i])
+                    anzahlGefangen++;
+            }
+            return anzahlGefangen;
+        }
     }
 }
