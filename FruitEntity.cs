@@ -35,15 +35,15 @@ namespace Falling_Fruits
         }
 
 
-        public void Draw(List<FruitEntity> fruitList, Matrix projectionMatrix, Player player)
+        public void Draw(List<FruitEntity> fruitList, Matrix projectionMatrix, Matrix playerView)
         {
             foreach(FruitEntity fruit in fruitList)
             {
-                DrawModel(fruit.fmodel, projectionMatrix, player.viewMatrix);
+                DrawModel(fruit.fmodel, projectionMatrix, playerView);
             }
         }
 
-        protected void DrawModel(Model model, Matrix projectionMatrix, Matrix playerViewMatrix)
+        protected void DrawModel(Model model, Matrix projectionMatrix, Matrix playerView)
         {
             transformations = new Matrix[model.Bones.Count];
             model.CopyAbsoluteBoneTransformsTo(transformations);
@@ -52,7 +52,7 @@ namespace Falling_Fruits
                 foreach (BasicEffect effect in modelMesh.Effects)
                 {
                     effect.World = transformations[modelMesh.ParentBone.Index] * Matrix.CreateScale(100f) * Matrix.CreateTranslation(fposition);
-                    effect.View = playerViewMatrix;
+                    effect.View = playerView;
                     effect.Projection = projectionMatrix;
                     effect.EnableDefaultLighting();
                 }

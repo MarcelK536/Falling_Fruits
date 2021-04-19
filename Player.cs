@@ -59,6 +59,12 @@ namespace Falling_Fruits
                 pRotation.Y -= .05f;
             }
         }
+
+        public Matrix GetView()
+        {
+            return viewMatrix;
+        }
+
         public void Draw(Matrix projectionMatrix)
         {
             transformations = new Matrix[pModel.Bones.Count];

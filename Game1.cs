@@ -238,7 +238,7 @@ namespace Falling_Fruits
             player.Draw(projectionMatrix);
             foreach(FruitEntity fruit in fruitList)
             {
-                fruit.Draw(fruitList,projectionMatrix, player);
+                fruit.Draw(fruitList,projectionMatrix, player.GetView());
             }
 
             _spriteBatch.Begin();
@@ -282,7 +282,7 @@ namespace Falling_Fruits
             {
                 foreach (BasicEffect effect in modelMesh.Effects)
                 {
-                    effect.View = player.viewMatrix;
+                    effect.View = player.GetView();
                     effect.World = worldMatrix;
                     effect.Projection = projectionMatrix;
                     effect.EnableDefaultLighting();
