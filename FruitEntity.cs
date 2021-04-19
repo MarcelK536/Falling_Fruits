@@ -12,25 +12,50 @@ namespace Falling_Fruits
         public Model[] Model;
         public int[] random;
 
+        public bool[] gefangen;
+
+
+        int w = 26;
+
+        Random rando = new Random();
 
 
         public FruitEntity(Model[] m)
         {
-            random = new int[7];
+ 
+            random = new int[26];
             Position = new Vector3[random.Length];
-            var rando = new Random();
-            for (int i = 0; i<random.Length; i++) {
-                Position[i] = new Vector3(i, 7, 0);
+            gefangen = new bool[random.Length];
 
+            for (int i = 0; i<random.Length; i++) {
+                Position[i] = new Vector3(i-(w/2), rando.Next(7, 28), 0);
+                gefangen[i] = false;
                 random[i] = rando.Next(0, m.Length);
             }
             this.Model = m;
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, Vector3 playerPos)
         {
             for (int i = 0; i<Position.Length; i++) {
-                Position[i].Y -= 0.01f;
+                
+                if(Vector3.Distance(new Vector3(playerPos.X, playerPos.Y -2, playerPos.Z), Position[i])< 3)
+                {
+                    gefangen[i] = true;
+                }
+
+                if (Position[i].Y > -13 && !gefangen[i])
+                {
+                    Position[i].Y -= 0.07f;
+                }
+                else if(!gefangen[i])
+                {
+                    Position[i] = new Vector3(i - (w / 2), rando.Next(7, 28), 0);
+                }
+                else
+                {
+                    //Position[i] = Vector3.Zero;
+                }
             }
         }
 

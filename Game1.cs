@@ -159,7 +159,7 @@ namespace Falling_Fruits
         private void UpdateInGame(GameTime gameTime)
         {
             player.Update(gameTime);
-            fruitEntity.Update(gameTime);
+            fruitEntity.Update(gameTime, player.GetPos());
         }
         private void UpdateCredits(GameTime gameTime)
         {
