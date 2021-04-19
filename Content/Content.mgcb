@@ -246,6 +246,13 @@
 /processorParam:TextureFormat=Color
 /build:GUI/Credits.png
 
+#begin GUI/CreditsFont.spritefont
+/importer:FontDescriptionImporter
+/processor:LocalizedFontProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:GUI/CreditsFont.spritefont
+
 #begin GUI/Play.png
 /importer:TextureImporter
 /processor:TextureProcessor

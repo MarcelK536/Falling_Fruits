@@ -21,6 +21,8 @@ namespace Falling_Fruits
         FruitEntity fruitEntity;
 
         List<GUI> mainMenu = new List<GUI>();
+        List<GUI> creditsMenu = new List<GUI>();
+        SpriteFont CreditsFont;
 
         Model banana;
         Model apple;
@@ -59,6 +61,8 @@ namespace Falling_Fruits
 
             mainMenu.Add(new GUI("play"));
             mainMenu.Add(new GUI("credits"));
+
+            creditsMenu.Add(new GUI("back"));
         }
 
         protected override void Initialize()
@@ -82,6 +86,7 @@ namespace Falling_Fruits
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            CreditsFont = Content.Load<SpriteFont>("GUI\\CreditsFont");
 
             mainMenu.Find(x => x.AssetName == "play").LoadContent(Content.Load<Texture2D>("GUI\\Play"));
             mainMenu.Find(x => x.AssetName == "credits").LoadContent(Content.Load<Texture2D>("GUI\\Credits"));
@@ -91,6 +96,13 @@ namespace Falling_Fruits
                 g.CenterElement(600, 800);
             }
             mainMenu.Find(x => x.AssetName == "credits").MoveElement(210, 0);
+
+            creditsMenu.Find(x => x.AssetName == "back").LoadContent(Content.Load<Texture2D>("GUI\\Back"));
+            foreach (GUI g in creditsMenu)
+            {
+                g.CenterElement(600, 800);
+            }
+            creditsMenu.Find(x => x.AssetName == "back").MoveElement(-85, -75);
 
             player.LoadContent(Content);
 
@@ -163,7 +175,20 @@ namespace Falling_Fruits
         }
         private void UpdateCredits(GameTime gameTime)
         {
-
+            foreach (GUI g in creditsMenu)
+            {
+                if (g.Update())
+                {
+                    switch (g.AssetName)
+                    {
+                        case ("back"):
+                            gameState = GameState.MainMenu;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
         }
 
         protected override void Draw(GameTime gameTime)
@@ -203,11 +228,24 @@ namespace Falling_Fruits
         {
             player.Draw(projectionMatrix);
             fruitEntity.Draw(gameTime, player.GetView(), projectionMatrix);
+
+            _spriteBatch.Begin();
+            _spriteBatch.DrawString(CreditsFont, "Score:", new Vector2(10, 10), Color.Black);
+            _spriteBatch.End();
+
         }
 
         private void DrawCredits(GameTime gameTime)
         {
-            DrawModel(pear);
+            _spriteBatch.Begin();
+            foreach (GUI g in creditsMenu)
+            {
+                g.Draw(_spriteBatch);
+            }
+            _spriteBatch.DrawString(CreditsFont, "Credits:", new Vector2(100, 50), Color.Black);
+            _spriteBatch.DrawString(CreditsFont, "Fruit Models are:", new Vector2(100, 100), Color.Black);
+            _spriteBatch.DrawString(CreditsFont, "\"Low Poly Fruits v2\" (https://skfb.ly/6D6QF) by EdwinRC \n is licensed under Creative Commons Attribution \n (http://creativecommons.org/licenses/by/4.0/).", new Vector2(25, 150), Color.Black);
+            _spriteBatch.End();
         }
 
         protected void DrawModel(Model model)
