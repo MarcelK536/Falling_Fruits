@@ -29,9 +29,14 @@ namespace Falling_Fruits
             //fposition -= Vector3.Down * fallSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
 
-        public void CollisionCheck()
+        public bool CollisionCheck(Player player, FruitEntity fruit)
         {
-            //TODO
+            if (Vector3.Distance(player.pPosition, fruit.fposition) < 3)
+            {
+               player.score++;
+               return true;
+            }
+            return false;
         }
 
 
@@ -39,11 +44,11 @@ namespace Falling_Fruits
         {
             foreach(FruitEntity fruit in fruitList)
             {
-                DrawModel(fruit.fmodel, projectionMatrix, playerView);
+                DrawModel(fruit.fmodel, projectionMatrix, playerView,fruit.fposition);
             }
         }
 
-        protected void DrawModel(Model model, Matrix projectionMatrix, Matrix playerView)
+        protected void DrawModel(Model model, Matrix projectionMatrix, Matrix playerView, Vector3 fruitPosition)
         {
             transformations = new Matrix[model.Bones.Count];
             model.CopyAbsoluteBoneTransformsTo(transformations);
@@ -51,8 +56,8 @@ namespace Falling_Fruits
             {
                 foreach (BasicEffect effect in modelMesh.Effects)
                 {
-                    effect.World = transformations[modelMesh.ParentBone.Index] * Matrix.CreateScale(100f) * Matrix.CreateTranslation(fposition);
                     effect.View = playerView;
+                    effect.World = Matrix.CreateTranslation(fruitPosition);
                     effect.Projection = projectionMatrix;
                     effect.EnableDefaultLighting();
                 }

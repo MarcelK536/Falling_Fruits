@@ -11,9 +11,10 @@ namespace Falling_Fruits
     class Player
     {
         Model pModel;
-        Vector3 pPosition;
+        public Vector3 pPosition;
         Vector3 pRotation;
         float pSpeed;
+        public int score;
 
         Vector3 camPos;
         public Matrix viewMatrix;
@@ -24,6 +25,7 @@ namespace Falling_Fruits
             camPos = new Vector3(pos.X, pos.Y + 15, pos.Z - 15);
             pRotation = Vector3.Zero;
             pSpeed = 1f;
+            score = 0;
         }
 
         public void LoadContent(ContentManager content)

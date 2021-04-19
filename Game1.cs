@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Falling_Fruits
@@ -165,7 +166,7 @@ namespace Falling_Fruits
         }
         private void UpdateInGame(GameTime gameTime)
         {
-
+            List<FruitEntity> collected = new List<FruitEntity>();
 
             if (fruitList.Count < 50)
             {
@@ -175,8 +176,12 @@ namespace Falling_Fruits
             foreach(FruitEntity fruit in fruitList)
             {
                 fruit.Update(gameTime);
+                if (fruit.CollisionCheck(player, fruit))
+                {
+                    collected.Add(fruit);
+                }
             }
-
+            fruitList = fruitList.Except(collected).ToList();
             player.Update(gameTime);
 
         }
@@ -242,7 +247,7 @@ namespace Falling_Fruits
             }
 
             _spriteBatch.Begin();
-            _spriteBatch.DrawString(CreditsFont, "Score:", new Vector2(10, 10), Color.Black);
+            _spriteBatch.DrawString(CreditsFont, "Score: " + player.score, new Vector2(10, 10), Color.Black);
             _spriteBatch.End();
 
             DrawModelPlayerView(Content.Load<Model>("Player\\Boden"));
