@@ -90,7 +90,7 @@ namespace Falling_Fruits
             {
                 g.CenterElement(600, 800);
             }
-            mainMenu.Find(x => x.AssetName == "credits").MoveElement(150, 0);
+            mainMenu.Find(x => x.AssetName == "credits").MoveElement(210, 0);
 
             player.LoadContent(Content);
 

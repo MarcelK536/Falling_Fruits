@@ -222,6 +222,18 @@
 /processorParam:TextureFormat=Compressed
 /build:Fruits/orange.fbx
 
+#begin GUI/Back.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:GUI/Back.png
+
 #begin GUI/Credits.png
 /importer:TextureImporter
 /processor:TextureProcessor
