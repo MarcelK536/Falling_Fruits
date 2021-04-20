@@ -24,7 +24,7 @@ namespace Falling_Fruits
         {
             camPos = new Vector3(pos.X, pos.Y + 7, pos.Z - 15);
             pRotation = Vector3.Zero;
-            pSpeed = 1f;
+            pSpeed = 0.5f;
             score = 0;
         }
 
