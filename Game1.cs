@@ -198,7 +198,6 @@ namespace Falling_Fruits
                             break;
                         default:
                             break;
-
                     }
                 }
             }
@@ -230,7 +229,9 @@ namespace Falling_Fruits
         {
             DrawModel(fruit_plate);
             _spriteBatch.Begin();
-            foreach(GUI g in mainMenu)
+            _spriteBatch.DrawString(CreditsFont, "Falling Fruits", new Vector2(303, 13), Color.Gray);
+            _spriteBatch.DrawString(CreditsFont, "Falling Fruits", new Vector2(300, 10), Color.Black);
+            foreach (GUI g in mainMenu)
             {
                 g.Draw(_spriteBatch);
             }
