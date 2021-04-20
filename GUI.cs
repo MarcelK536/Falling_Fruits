@@ -20,6 +20,9 @@ namespace Falling_Fruits
 
         public event ElementClicked clickEvent;
 
+        bool delay = false;
+        double delayTime = 0.15;
+
         public GUI(string assetName)
         {
             this.assetName = assetName;
@@ -31,9 +34,20 @@ namespace Falling_Fruits
             GUIRectangle = new Rectangle(0, 0, GUITexture.Width, GUITexture.Height);
         }
 
-        public bool Update()
+        public bool Update(GameTime gameTime)
         {
-            return (GUIRectangle.Contains(new Point(Mouse.GetState().X, Mouse.GetState().Y)) && Mouse.GetState().LeftButton == ButtonState.Pressed);
+            if (delay == false)
+            {
+                delay = true;
+                delayTime = 0.1;
+                return (GUIRectangle.Contains(new Point(Mouse.GetState().X, Mouse.GetState().Y)) && Mouse.GetState().LeftButton == ButtonState.Pressed);
+            }
+            delayTime -= gameTime.ElapsedGameTime.TotalSeconds;
+            if (delayTime <= 0)
+            {
+                delay = false;
+            }
+            return false;
             
         }
 
