@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -8,83 +9,61 @@ namespace Falling_Fruits
 {
     class FruitEntity
     {
-        public Vector3[] Position;
-        public Model[] Model;
-        public int[] random;
+        public Vector3 fposition;
+        public Model fmodel;
+        float fallSpeed;
 
-        public bool[] gefangen;
+        Matrix[] transformations;
 
+        public enum fType { ananas, apple, pear, cherry, melon }
 
-        int w = 26;
-
-        Random rando = new Random();
-
-
-        public FruitEntity(Model[] m)
+        public FruitEntity(Model genModel)
         {
- 
-            random = new int[26];
-            Position = new Vector3[random.Length];
-            gefangen = new bool[random.Length];
-
-            for (int i = 0; i<random.Length; i++) {
-                Position[i] = new Vector3(i-(w/2), rando.Next(7, 28), 0);
-                gefangen[i] = false;
-                random[i] = rando.Next(0, m.Length);
-            }
-            this.Model = m;
+            fposition = Vector3.Left * new Random().Next(-10, 10) + Vector3.Forward * new Random().Next(-10, 10) + Vector3.Up * new Random().Next(8);
+            fmodel = genModel;
+            fallSpeed = 0.2f;
         }
 
-        public void Update(GameTime gameTime, Vector3 playerPos)
+        public void Update(GameTime gameTime)
         {
-            for (int i = 0; i<Position.Length; i++) {
-                
-                if(Vector3.Distance(new Vector3(playerPos.X, playerPos.Y -2, playerPos.Z), Position[i])< 3)
-                {
-                    gefangen[i] = true;
-                }
+            if (fposition.Y > 0.5)
+                fposition += Vector3.Down * fallSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+        }
 
-                if (Position[i].Y > -13 && !gefangen[i])
-                {
-                    Position[i].Y -= 0.07f;
-                }
-                else if(!gefangen[i])
-                {
-                    Position[i] = new Vector3(i - (w / 2), rando.Next(7, 28), 0);
-                }
-                else
-                {
-                    //Position[i] = Vector3.Zero;
-                }
+        public bool CollisionCheck(Player player, FruitEntity fruit)
+        {
+            if (Vector3.Distance(player.pPosition, fruit.fposition) < 3)
+            {
+                player.score++;
+                return true;
+            }
+            return false;
+        }
+
+
+        public void Draw(List<FruitEntity> fruitList, Matrix projectionMatrix, Matrix playerView)
+        {
+            foreach (FruitEntity fruit in fruitList)
+            {
+                DrawModel(fruit.fmodel, projectionMatrix, playerView, fruit.fposition);
             }
         }
 
-        public void Draw(GameTime gameTime, Matrix view, Matrix projection)
+        protected void DrawModel(Model model, Matrix projectionMatrix, Matrix playerView, Vector3 fruitPosition)
         {
-            for (int i = 0; i<random.Length; i++) { 
-            foreach (ModelMesh modelMesh in Model[random[i]].Meshes)
+            transformations = new Matrix[model.Bones.Count];
+            model.CopyAbsoluteBoneTransformsTo(transformations);
+            foreach (ModelMesh modelMesh in model.Meshes)
             {
                 foreach (BasicEffect effect in modelMesh.Effects)
                 {
-                    effect.View = view;
-                    effect.World = Matrix.CreateTranslation(Position[i]);
-                    effect.Projection = projection;
+                    effect.View = playerView;
+                    effect.World = Matrix.CreateTranslation(fruitPosition);
+                    effect.Projection = projectionMatrix;
                     effect.EnableDefaultLighting();
                 }
                 modelMesh.Draw();
             }
-            }
-        }
-
-        public int getCaught()
-        {
-            int anzahlGefangen = 0;
-            for(int i =0; i< gefangen.Length; i++)
-            {
-                if(gefangen[i])
-                    anzahlGefangen++;
-            }
-            return anzahlGefangen;
-        }
+        } 
     }
 }

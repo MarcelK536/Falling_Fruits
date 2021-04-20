@@ -11,24 +11,21 @@ namespace Falling_Fruits
     class Player
     {
         Model pModel;
-        Vector3 pPosition;
+        public Vector3 pPosition;
         Vector3 pRotation;
         float pSpeed;
+        public int score;
 
         Vector3 camPos;
-        Matrix viewMatrix;
+        public Matrix viewMatrix;
         Matrix[] transformations;
 
         public Player(Vector3 pos)
         {
-            camPos = new Vector3(pos.X, pos.Y + 6, pos.Z - 14);
-            viewMatrix = Matrix.CreateLookAt(camPos, new Vector3(0, -1, 0), Vector3.Up);
-            pSpeed = 5f;
-
-            pRotation.X += 1f;
-
-            //pPosition.Z -= 2;
-
+            camPos = new Vector3(pos.X, pos.Y + 7, pos.Z - 15);
+            pRotation = Vector3.Zero;
+            pSpeed = 0.5f;
+            score = 0;
         }
 
         public void LoadContent(ContentManager content)
@@ -48,34 +45,50 @@ namespace Falling_Fruits
 
         public void Update(GameTime gameTime)
         {
-            /*camPos.X = pRotation.X - 15f * (float)Math.Sin(pRotation.Y);
-            camPos.Z = pRotation.Z - 5f * (float)Math.Cos(pRotation.Y);
+            camPos.X = pPosition.X - 15f * (float)Math.Sin(pRotation.Y);
+            camPos.Z = pPosition.Z - 15f * (float)Math.Cos(pRotation.Y);
             viewMatrix = Matrix.CreateLookAt(camPos, pPosition, Vector3.Up);
-            */
+
             KeyboardState kbState = Keyboard.GetState();
 
-            /*if(kbState.IsKeyDown(Keys.W) || kbState.IsKeyDown(Keys.Up))
+            if(kbState.IsKeyDown(Keys.W) || kbState.IsKeyDown(Keys.Up))
             {
-                pPosition.Z += 0.05f;//(float)Math.Sin(pRotation.Y) * pSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                //pPosition.Z += 1;//(float)Math.Cos(pRotation.Y) * pSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                pPosition.X += (float)Math.Sin(pRotation.Y) * pSpeed;
+                pPosition.Z += (float)Math.Cos(pRotation.Y) * pSpeed;
             }
             if (kbState.IsKeyDown(Keys.S) || kbState.IsKeyDown(Keys.Down))
             {
-                pPosition.Z -= 0.05f;//(float)Math.Sin(pRotation.Y) * pSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                //pPosition.Z -= 1;//(float)Math.Cos(pRotation.Y) * pSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                pPosition.X -= (float)Math.Sin(pRotation.Y) * pSpeed;
+                pPosition.Z -= (float)Math.Cos(pRotation.Y) * pSpeed;
 
-            }*/
+            }
             if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
             {
-                pPosition.X += 0.1f;
-                //pRotation.Y += .05f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                pRotation.Y += .05f;
             }
             if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
             {
-                pPosition.X -= 0.1f;
-                //pRotation.Y -= .05f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                pRotation.Y -= .05f;
+            }
+
+            if (pPosition.X > 15)
+            {
+                pPosition.X = 15;
+            }
+            if (pPosition.X < -15)
+            {
+                pPosition.X = -15;
+            }
+            if (pPosition.Z > 15)
+            {
+                pPosition.Z = 15;
+            }
+            if (pPosition.Z < -15)
+            {
+                pPosition.Z = -15;
             }
         }
+
         public void Draw(Matrix projectionMatrix)
         {
             transformations = new Matrix[pModel.Bones.Count];

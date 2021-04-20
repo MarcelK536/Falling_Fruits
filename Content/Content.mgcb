@@ -13,6 +13,13 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin CreditsFont.spritefont
+/importer:FontDescriptionImporter
+/processor:LocalizedFontProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:CreditsFont.spritefont
+
 #begin Fruits/ananas.fbx
 /importer:FbxImporter
 /processor:ModelProcessor
