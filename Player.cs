@@ -22,7 +22,7 @@ namespace Falling_Fruits
 
         public Player(Vector3 pos)
         {
-            camPos = new Vector3(pos.X, pos.Y + 15, pos.Z - 15);
+            camPos = new Vector3(pos.X, pos.Y + 7, pos.Z - 15);
             pRotation = Vector3.Zero;
             pSpeed = 1f;
             score = 0;
