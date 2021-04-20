@@ -37,6 +37,8 @@ namespace Falling_Fruits
         Model apple;
         Model pear;
         Model banana;
+        Model melon;
+        Model cherry;
 
         List<Model> fruitModels = new List<Model>();
 
@@ -131,11 +133,15 @@ namespace Falling_Fruits
             apple = Content.Load<Model>("Fruits\\apfel");
             pear = Content.Load<Model>("Fruits\\banane");
             banana = Content.Load<Model>("Fruits\\birne");
+            melon = Content.Load<Model>("Fruits\\melone");
+            cherry = Content.Load<Model>("Fruits\\kirsche");
 
             fruitModels.Add(pineapple);
             fruitModels.Add(apple);
             fruitModels.Add(pear);
             fruitModels.Add(banana);
+            fruitModels.Add(melon);
+            fruitModels.Add(cherry);
 
             CreditsFont = Content.Load<SpriteFont>("CreditsFont");
 
