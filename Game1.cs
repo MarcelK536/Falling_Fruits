@@ -67,7 +67,7 @@ namespace Falling_Fruits
         {
             // TODO: Add your initialization logic here
 
-            base.Initialize();
+
 
             //CameraSetup
             camTarget = new Vector3(0f, 0f, 0f);
@@ -76,7 +76,7 @@ namespace Falling_Fruits
             worldMatrix = Matrix.CreateTranslation(new Vector3(0f, 0f, 0f));
             viewMatrix = Matrix.CreateLookAt(new Vector3(0f, 0f, 10f), new Vector3(0f, 0f, 0f), Vector3.Up);
             projectionMatrix = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), GraphicsDevice.DisplayMode.AspectRatio, 1f, 1000f);
-
+            base.Initialize();
         }
 
         protected override void LoadContent()
@@ -269,6 +269,7 @@ namespace Falling_Fruits
 
         protected void DrawModel(Model model)
         {
+            GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             foreach (ModelMesh modelMesh in model.Meshes)
             {
                 foreach (BasicEffect effect in modelMesh.Effects)
@@ -284,13 +285,14 @@ namespace Falling_Fruits
 
         protected void DrawModelPlayerView(Model model)
         {
+            GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             foreach (ModelMesh modelMesh in model.Meshes)
             {
                 foreach (BasicEffect effect in modelMesh.Effects)
                 {
                     effect.View = player.GetView();
-                    effect.World = worldMatrix;
-                    effect.Projection = projectionMatrix;
+                    effect.World = worldMatrix * Matrix.CreateScale(new Vector3(20,1,20)) * Matrix.CreateRotationY(-0.37f);
+                    effect.Projection = projectionMatrix * Matrix.CreateTranslation(Vector3.Up * 0.25f);
                     effect.EnableDefaultLighting();
                 }
                 modelMesh.Draw();

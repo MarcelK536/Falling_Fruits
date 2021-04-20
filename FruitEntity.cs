@@ -26,7 +26,7 @@ namespace Falling_Fruits
 
         public void Update(GameTime gameTime)
         {
-            if(fposition.Y > 0)
+            if(fposition.Y > 0.5)
             fposition += Vector3.Down * fallSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
 
