@@ -21,7 +21,7 @@ namespace Falling_Fruits
         {
             fposition = Vector3.Left * new Random().Next(-10, 10) + Vector3.Forward * new Random().Next(-10, 10) + Vector3.Up * new Random().Next(8);
             fmodel = genModel;
-            fallSpeed = 0.3f;
+            fallSpeed = 0.35f;
         }
 
         public void Update(GameTime gameTime)

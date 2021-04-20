@@ -260,6 +260,8 @@ namespace Falling_Fruits
 
         private void UpdateYouWin(GameTime gameTime)
         {
+            player.score = 0;
+            gameTimeRemaining = 61;
             foreach (GUI g in winLoseMenu)
             {
                 if (g.Update(gameTime))
