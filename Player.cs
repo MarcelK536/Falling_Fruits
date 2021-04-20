@@ -60,6 +60,23 @@ namespace Falling_Fruits
             {
                 pRotation.Y -= .05f;
             }
+
+            if (pPosition.X > 15)
+            {
+                pPosition.X = 15;
+            }
+            if (pPosition.X < -15)
+            {
+                pPosition.X = -15;
+            }
+            if (pPosition.Z > 15)
+            {
+                pPosition.Z = 15;
+            }
+            if (pPosition.Z < -15)
+            {
+                pPosition.Z = -15;
+            }
         }
 
         public Matrix GetView()
