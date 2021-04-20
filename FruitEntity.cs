@@ -19,14 +19,15 @@ namespace Falling_Fruits
 
         public FruitEntity(Model genModel)
         {
-            fposition = Vector3.Left * new Random().Next(-10, 10) + Vector3.Forward * new Random().Next(-10,10);
+            fposition = Vector3.Left * new Random().Next(-10, 10) + Vector3.Forward * new Random().Next(-10, 10) + Vector3.Up * new Random().Next(8);
             fmodel = genModel;
             fallSpeed = 0.2f;         
         }
 
         public void Update(GameTime gameTime)
         {
-            //fposition -= Vector3.Down * fallSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if(fposition.Y > 0)
+            fposition += Vector3.Down * fallSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
 
         public bool CollisionCheck(Player player, FruitEntity fruit)
